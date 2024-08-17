@@ -1,0 +1,58 @@
+version: "3"
+
+name: tiktok-shop-recommender
+
+services:
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    volumes:
+      - tiktok_shop_recommender_postgres_data:/var/lib/postgresql/data
+      - ./postgres/vector_extension.sql:/docker-entrypoint-initdb.d/0-vector_extension.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=vectorexample
+
+  api-node:
+    build:
+      context: ./api-node
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./api-node:/app
+      - ./api-node/bin:/app/bin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=vectorexample
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    command: make watch
+
+  #recommendation-node:
+  #  build:
+  #    context: ./api-node
+  #    dockerfile: Dockerfile.dev
+  #  volumes:
+  #    - ./recommendation-node:/app
+  #  ports:
+  #    - "8081:8081"
+  #  depends_on:
+  #    - postgres
+  #    - api-node
+  #  environment:
+  #    - DB_HOST=postgres
+  #    - DB_PORT=5432
+  #    - DB_NAME=vectorexample
+  #    - DB_USER=postgres
+  #    - DB_PASSWORD=postgres
+
+volumes:
+  tiktok_shop_recommender_postgres_data:
