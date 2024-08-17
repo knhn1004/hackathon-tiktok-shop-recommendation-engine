@@ -1,0 +1,12 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+cmd = "go build -o ./bin/api-node ."
+bin = "./bin/api-node"
+full_bin = "cp .env.local bin/.env.local && ./bin/api-node"
+include_ext = ["go", "tpl", "tmpl", "html"]
+exclude_dir = ["assets", "tmp", "vendor"]
+
+[misc]
+clean_on_exit = true
