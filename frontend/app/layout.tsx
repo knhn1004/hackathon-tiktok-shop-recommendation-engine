@@ -8,7 +8,6 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import { auth } from '@clerk/nextjs/server';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,12 +22,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-	// // TODO: remove this - sample logging token from clerk in SSR
-	// const { getToken } = auth();
-	// if (getToken) {
-	// 	const token = await getToken({template: 'default'});
-	// 	console.log(token);
-	// }
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
