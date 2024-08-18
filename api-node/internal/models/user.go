@@ -19,3 +19,12 @@ type Creator struct {
 	UserProfileID uint
 	UserProfile   UserProfile `gorm:"foreignKey:UserProfileID;constraint:OnDelete:CASCADE;"`
 }
+
+func GetUserProfileByUserID(db *gorm.DB, userID string) (*UserProfile, error) {
+	var userProfile UserProfile
+	result := db.Where("user_id = ?", userID).First(&userProfile)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &userProfile, nil
+}

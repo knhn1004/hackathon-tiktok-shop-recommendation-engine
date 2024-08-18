@@ -74,7 +74,7 @@ func OrderCart(c fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create order"})
 	}
 
-	// Create order items
+	// Create order items and product interactions
 	for _, item := range orderItems {
 		var product models.Product
 		if err := tx.First(&product, item.ProductID).Error; err != nil {
@@ -92,6 +92,24 @@ func OrderCart(c fiber.Ctx) error {
 		if err := tx.Create(&orderItem).Error; err != nil {
 			tx.Rollback()
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create order item"})
+		}
+
+		// use the getUserProfileByUserID function to get the user profile
+		userProfile, err := models.GetUserProfileByUserID(db.DB, order.UserID)
+		if err != nil {
+			tx.Rollback()
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create order item"})
+		}
+
+		interaction := models.UserProductInteraction{
+			UserProfileID:   userProfile.ID,
+			ProductID:       item.ProductID,
+			InteractionType: "purchase",
+		}
+
+		if err := tx.Create(&interaction).Error; err != nil {
+			tx.Rollback()
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create product interaction"})
 		}
 	}
 
