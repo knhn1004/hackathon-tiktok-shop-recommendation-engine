@@ -32,10 +32,10 @@ type Category struct {
 type Product struct {
     gorm.Model `json:"-"`
     ID          uint     `json:"id" gorm:"primaryKey"`
-    Shop        Shop     `json:"shop"`
+    Shop        Shop     `json:"shop" gorm:"foreignKey:ShopID"`
     ShopID      uint     `json:"shopId" gorm:"constraint:OnDelete:CASCADE;"`
-    CategoryID  uint     `json:"categoryId" gorm:"foreignKey:ID;constraint:OnDelete:SET NULL;"`
-    Category    Category `json:"category"`
+    Category    Category `json:"category" gorm:"foreignKey:CategoryID"`
+    CategoryID  uint     `json:"categoryId" gorm:"constraint:OnDelete:SET NULL;"`
     Title       string   `json:"title"`
     Description string   `json:"description"`
     Price       float64  `json:"price"`

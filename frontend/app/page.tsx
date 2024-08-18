@@ -20,12 +20,18 @@ interface Article {
   tags: string[] | null;
 }
 
+interface RecommendedProduct {
+  id: number;
+  title: string;
+}
+
 const Page: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isSignedIn, getToken } = useAuth();
   const viewStartTimeRef = useRef<number | null>(null);
   const isNavigatingRef = useRef(false);
+  const [recommendedProducts, setRecommendedProducts] = useState<RecommendedProduct[]>([]);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -33,7 +39,7 @@ const Page: React.FC = () => {
         try {
           const token = await getToken({ template: "default" });
           const response = await fetch(
-            "http://127.0.0.1:8080/api/articles/?page1",
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/articles/?page1`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -57,7 +63,7 @@ const Page: React.FC = () => {
 
     try {
       const token = await getToken({ template: "default" });
-      await fetch("http://127.0.0.1:8080/api/interactions/articles", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/interactions/articles`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,7 +112,7 @@ const Page: React.FC = () => {
       const isLiked = currentArticle.likes.includes(1); // Assuming 1 represents the current user's like
 
       const response = await fetch(
-        `http://127.0.0.1:8080/api/articles/${currentArticle.id}/like`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/articles/${currentArticle.id}/like`,
         {
           method: isLiked ? "DELETE" : "POST",
           headers: {
@@ -117,7 +123,7 @@ const Page: React.FC = () => {
       );
       if (isLiked) {
         const likeInteraction = await fetch(
-          'http://127.0.0.1:8080/api/interactions/articles',
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/interactions/articles`,
           {
             method: "POST",
             headers: {
@@ -153,6 +159,31 @@ const Page: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchRecommendedProducts = async () => {
+      if (isSignedIn && articles.length > 0) {
+        try {
+          const token = await getToken({ template: "default" });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/articles/${articles[currentIndex].id}/recommendations`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+          setRecommendedProducts(data);
+        } catch (error) {
+          console.error("Error fetching recommended products:", error);
+        }
+      }
+    };
+
+    fetchRecommendedProducts();
+  }, [isSignedIn, getToken, articles, currentIndex]);
+
   if (!isSignedIn) {
     return (
       <div className={styles.container}>
@@ -183,10 +214,9 @@ const Page: React.FC = () => {
         comments={currentArticle.views}
         avatar={currentArticle.creator.userProfile.avatarUrl}
         handleLike={handleLike}
+        isLiked={currentArticle.likes.includes(1)}
+        recommendedProducts={recommendedProducts}
       />
-      <Link href="/products">
-        <button>Products</button>
-      </Link>
       <div className={styles.buttons}>
         <button
           className={styles.arrowButton}

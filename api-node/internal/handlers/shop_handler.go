@@ -12,19 +12,32 @@ import (
 )
 
 func GetProductsByShopID(c fiber.Ctx) error {
-	// TODO: right now the shopId's are not correct due to json string in model definition
-	shopID, err := strconv.Atoi(c.Params("shopId"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid shop ID"})
-	}
+    shopID, err := strconv.Atoi(c.Params("shopId"))
+    if err != nil {
+        return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid shop ID"})
+    }
 
-	var products []models.Product
-	result := db.DB.Where("shop_id = ?", shopID).Find(&products)
-	if result.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to fetch products"})
-	}
+    var products []models.Product
+    result := db.DB.Table("products").
+        Select("products.*, shops.*, creators.*, user_profiles.*, categories.*").
+        Joins("LEFT JOIN shops ON shops.id = products.shop_id").
+        Joins("LEFT JOIN creators ON creators.id = shops.creator_id").
+        Joins("LEFT JOIN user_profiles ON user_profiles.id = creators.user_profile_id").
+        Joins("LEFT JOIN categories ON categories.id = products.category_id").
+        Where("products.shop_id = ?", shopID).
+        Find(&products)
 
-	return c.JSON(products)
+    if result.Error != nil {
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to fetch products"})
+    }
+
+    // Debug: Print product details
+    for _, product := range products {
+        fmt.Printf("Product ID: %d, Shop ID: %d, Creator ID: %d, UserProfile ID: %d\n",
+            product.ID, product.Shop.ID, product.Shop.Creator.ID, product.Shop.Creator.UserProfile.ID)
+    }
+
+    return c.JSON(products)
 }
 
 

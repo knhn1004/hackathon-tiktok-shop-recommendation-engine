@@ -176,7 +176,7 @@ func generateProduct(genre string, shopID uint) models.Product {
 	return models.Product{
 		ShopID:      shopID,
 		CategoryID:  category.ID,
-		Title:       fmt.Sprintf("%s Item", genre),
+		Title:       fmt.Sprintf("%s Item #%d", genre, rand.Intn(1000)),
 		Description: fmt.Sprintf("An amazing %s product that you'll love. Perfect for enthusiasts and beginners alike.", genre),
 		Price:       float64(rand.Intn(10000)) / 100,
 		ImageURL:    faker.URL(),

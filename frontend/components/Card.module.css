@@ -4,11 +4,10 @@
   padding: 24px;
   background-color: #fff;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  margin-bottom: 32px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   max-width: 800px;
-  min-height: 600px;
+  min-height: 300px;
 }
 
 .content {
@@ -22,12 +21,15 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 16px;
+  color: #333;
 }
 
 .description {
   font-size: 18px;
   margin-bottom: 16px;
   text-align: center;
+  color: #666;
+  flex-grow: 1;
 }
 
 .footer {
@@ -44,7 +46,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .likes, .comments {
@@ -55,4 +57,33 @@
 
 .comments {
   margin-bottom: 0;
+}
+
+.recommendedProducts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 16px;
+}
+
+.productChip {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.productChip:hover {
+  background-color: #e0e0e0;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

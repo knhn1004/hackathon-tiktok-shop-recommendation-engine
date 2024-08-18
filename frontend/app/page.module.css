@@ -72,3 +72,24 @@
 .arrowButton:disabled .arrowIcon {
   fill: #999;
 }
+
+.recommendedProducts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.productChip {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.productChip:hover {
+  background-color: #e0e0e0;
+}
