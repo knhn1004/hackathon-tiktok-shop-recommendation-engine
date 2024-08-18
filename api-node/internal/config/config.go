@@ -2,7 +2,9 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -16,13 +18,25 @@ var (
 	// OpenAI
 	OpenAIKey string
 
+	// Database
+	DBHost     string
+	DBUser     string
+	DBPassword string
+	DBName     string
+	DBPort     int
+
 	configs = []Configuration{
 		{&OpenAIKey, "OPENAI_API_KEY"},
+		{&DBHost, "DB_HOST"},
+		{&DBUser, "DB_USER"},
+		{&DBPassword, "DB_PASSWORD"},
+		{&DBName, "DB_NAME"},
 	}
 
 	// Web
 	ServerAddr string = "localhost:8080"
 )
+
 
 // Load reads config from .env file
 func Load() error {
@@ -38,6 +52,17 @@ func Load() error {
 			*config.Target = value
 		}
 	}
+
+	// Handle DBPort separately
+	portStr, ok := os.LookupEnv("DB_PORT")
+	if !ok {
+		return errors.New("DB_PORT required")
+	}
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		return fmt.Errorf("invalid DB_PORT: %v", err)
+	}
+	DBPort = port
 
 	return nil
 }

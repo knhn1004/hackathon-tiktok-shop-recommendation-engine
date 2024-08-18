@@ -11,11 +11,15 @@ services:
       - "5432:5432"
     volumes:
       - tiktok_shop_recommender_postgres_data:/var/lib/postgresql/data
-      - ./postgres/vector_extension.sql:/docker-entrypoint-initdb.d/0-vector_extension.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=vectorexample
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api-node:
     build:
@@ -27,14 +31,17 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_NAME=vectorexample
+      - DB_NAME=postgres
       - DB_USER=postgres
       - DB_PASSWORD=postgres
-    command: make watch
+    command: sh -c "make migrate && go run main.go"
+    tty: true
+    stdin_open: true
 
   #recommendation-node:
   #  build:

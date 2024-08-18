@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/config"
+	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/services/db"
 )
 
 func main() {
@@ -13,6 +14,18 @@ func main() {
 	err := config.Load()
 	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
+	}
+
+	// Initialize the database
+	err = db.InitDB(
+		config.DBHost,
+		config.DBUser,
+		config.DBPassword,
+		config.DBName,
+		config.DBPort,
+	)
+	if err != nil {
+		log.Fatal("Error initializing database: ", err)
 	}
 
 	// Create a new Fiber app
