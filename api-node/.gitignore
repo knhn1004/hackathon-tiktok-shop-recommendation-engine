@@ -30,3 +30,4 @@ go.work
 !.env.example
 bin/
 tmp/
+*.log

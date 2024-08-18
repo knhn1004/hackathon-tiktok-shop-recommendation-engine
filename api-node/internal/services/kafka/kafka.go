@@ -31,6 +31,12 @@ func init() {
 	go kafkaWorker()
 }
 
+type InteractionMessage struct {
+    UserID          string      `json:"userId"`
+    InteractionType string      `json:"interactionType"`
+    Data            interface{} `json:"data"`
+}
+
 func initKafkaWriters() {
 	mechanism, err := scram.Mechanism(scram.SHA256, config.KafkaUsername, config.KafkaPassword)
 	if err != nil {
@@ -66,9 +72,14 @@ func GetProductWriter() *kafka.Writer {
 	return productWriter
 }
 
-func WriteArticleInteraction(ctx context.Context, key []byte, value interface{}) {
+func WriteArticleInteraction(ctx context.Context, userID string, interactionType string, value interface{}) {
+	message := InteractionMessage{
+		UserID:          userID,
+		InteractionType: interactionType,
+		Data:            value,
+	}
 	select {
-	case kafkaChannel <- KafkaMessage{Topic: config.KafkaArticleInteractionTopic, Key: key, Value: value}:
+	case kafkaChannel <- KafkaMessage{Topic: config.KafkaArticleInteractionTopic, Key: []byte(userID), Value: message}:
 		// Message sent to channel
 	default:
 		// Channel is full, log an error or implement a fallback strategy
@@ -76,9 +87,14 @@ func WriteArticleInteraction(ctx context.Context, key []byte, value interface{})
 	}
 }
 
-func WriteProductInteraction(ctx context.Context, key []byte, value interface{}) {
+func WriteProductInteraction(ctx context.Context, userID string, interactionType string, value interface{}) {
+	message := InteractionMessage{
+		UserID:          userID,
+		InteractionType: interactionType,
+		Data:            value,
+	}
 	select {
-	case kafkaChannel <- KafkaMessage{Topic: config.KafkaProductInteractionTopic, Key: key, Value: value}:
+	case kafkaChannel <- KafkaMessage{Topic: config.KafkaProductInteractionTopic, Key: []byte(userID), Value: message}:
 		// Message sent to channel
 	default:
 		// Channel is full, log an error or implement a fallback strategy

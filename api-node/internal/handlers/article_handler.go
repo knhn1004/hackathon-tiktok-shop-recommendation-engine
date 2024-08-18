@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/models"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/services/db"
+	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/services/kafka"
 )
 
 func GetArticles(c fiber.Ctx) error {
@@ -69,14 +71,25 @@ func LikeArticle(c fiber.Ctx) error {
 		ArticleID:     uint(articleIDUint),
 	}
 
-	result := db.DB.Create(&like)
+	result := db.DB.FirstOrCreate(&like, like)
 	if result.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Failed to like article",
 		})
 	}
 
-	return c.SendStatus(fiber.StatusCreated)
+	// Send interaction to Kafka asynchronously only if a new like was created
+	if result.RowsAffected > 0 {
+		go func() {
+			kafka.WriteArticleInteraction(context.Background(), userID, "like", map[string]interface{}{
+				"articleId": articleIDUint,
+			})
+		}()
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Article liked successfully",
+	})
 }
 
 func UnlikeArticle(c fiber.Ctx) error {
@@ -85,7 +98,7 @@ func UnlikeArticle(c fiber.Ctx) error {
 
 	userProfile, err := models.GetUserProfileByUserID(db.DB, userID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Failed to get user profile",
 			"userId": userID,
 		})
@@ -95,8 +108,8 @@ func UnlikeArticle(c fiber.Ctx) error {
 		Delete(&models.ArticleLike{})
 
 	if result.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to unlike article",
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": result.Error.Error(),
 		})
 	}
 

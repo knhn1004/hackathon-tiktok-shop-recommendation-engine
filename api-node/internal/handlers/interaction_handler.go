@@ -48,7 +48,7 @@ func CreateArticleInteraction(c fiber.Ctx) error {
 
 	// Send interaction to Kafka asynchronously
 	go func() {
-		kafka.WriteArticleInteraction(context.Background(), []byte(userID), interaction)
+		kafka.WriteArticleInteraction(context.Background(), userID, interaction.InteractionType, interaction)
 	}()
 
 	return c.Status(fiber.StatusCreated).JSON(interaction)
@@ -56,8 +56,8 @@ func CreateArticleInteraction(c fiber.Ctx) error {
 
 func CreateProductInteraction(c fiber.Ctx) error {
 	var input struct {
-		ProductID       uint   `json:"productId"`
-		InteractionType string `json:"interactionType"`
+			ProductID       uint   `json:"productId"`
+			InteractionType string `json:"interactionType"`
 	}
 	if err := c.Bind().JSON(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input data"})
@@ -90,7 +90,7 @@ func CreateProductInteraction(c fiber.Ctx) error {
 
 	// Send interaction to Kafka asynchronously
 	go func() {
-		kafka.WriteProductInteraction(context.Background(), []byte(userID), interaction)
+		kafka.WriteProductInteraction(context.Background(), userID, interaction.InteractionType, interaction)
 	}()
 
 	return c.Status(fiber.StatusCreated).JSON(interaction)
