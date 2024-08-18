@@ -3,52 +3,69 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
 type Shop struct {
-	gorm.Model
-	CreatorID uint `gorm:"constraint:OnDelete:CASCADE;"`
-	Creator     Creator
-	Name        string
-	Description string
+    gorm.Model `json:"-"`
+    ID          uint   `json:"id" gorm:"primaryKey"`
+    CreatorID   uint   `json:"creatorId" gorm:"constraint:OnDelete:CASCADE;"`
+    Creator     Creator `json:"creator"`
+    Name        string  `json:"name"`
+    Description string  `json:"description"`
+    CreatedAt   time.Time `json:"createdAt"`
+    UpdatedAt   time.Time `json:"updatedAt"`
 }
 
 type Category struct {
-	gorm.Model
-	Name     string
-	ParentID *uint
-	Parent   *Category
+    gorm.Model `json:"-"`
+    ID       uint      `json:"id" gorm:"primaryKey"`
+    Name     string    `json:"name"`
+    ParentID *uint     `json:"parentId"`
+    Parent   *Category `json:"parent"`
+    CreatedAt time.Time `json:"createdAt"`
+    UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type Product struct {
-	gorm.Model
-	Shop        Shop
-	ShopID      uint `gorm:"constraint:OnDelete:CASCADE;"`
-	CategoryID  uint `gorm:"foreignKey:ID;constraint:OnDelete:SET NULL;"`
-	Category    Category
-	Title       string
-	Description string
-	Price       float64
-	ImageURL    string
+    gorm.Model `json:"-"`
+    ID          uint     `json:"id" gorm:"primaryKey"`
+    Shop        Shop     `json:"shop"`
+    ShopID      uint     `json:"shopId" gorm:"constraint:OnDelete:CASCADE;"`
+    CategoryID  uint     `json:"categoryId" gorm:"foreignKey:ID;constraint:OnDelete:SET NULL;"`
+    Category    Category `json:"category"`
+    Title       string   `json:"title"`
+    Description string   `json:"description"`
+    Price       float64  `json:"price"`
+    ImageURL    string   `json:"imageUrl"`
+    CreatedAt   time.Time `json:"createdAt"`
+    UpdatedAt   time.Time `json:"updatedAt"`
 }
 
 type Order struct {
-	gorm.Model
-	UserID    string
-	ShopID    uint
-	Status    string // e.g., "pending", "completed", "cancelled"
-	OrderItems []OrderItem
+    gorm.Model `json:"-"`
+    ID         uint        `json:"id" gorm:"primaryKey"`
+    UserID     string      `json:"userId"`
+    ShopID     uint        `json:"shopId"`
+    Status     string      `json:"status"`
+    OrderItems []OrderItem `json:"orderItems"`
+    CreatedAt  time.Time   `json:"createdAt"`
+    UpdatedAt  time.Time   `json:"updatedAt"`
 }
 
 type OrderItem struct {
-	gorm.Model
-	OrderID   uint
-	Order     Order   `gorm:"foreignKey:OrderID"`
-	ProductID uint
-	Product   Product `gorm:"foreignKey:ProductID"`
-	Quantity  int
-	Price     float64 // Price at the time of order
+    gorm.Model `json:"-"`
+    ID        uint    `json:"id" gorm:"primaryKey"`
+    OrderID   uint    `json:"orderId"`
+    Order     Order   `json:"order" gorm:"foreignKey:OrderID"`
+    ProductID uint    `json:"productId"`
+    Product   Product `json:"product" gorm:"foreignKey:ProductID"`
+    Quantity  int     `json:"quantity"`
+    Price     float64 `json:"price"`
+    CreatedAt time.Time `json:"createdAt"`
+    UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type OrderItemInput struct {

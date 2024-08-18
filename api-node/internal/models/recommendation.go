@@ -9,47 +9,54 @@ import (
 	"github.com/pgvector/pgvector-go"
 	"gorm.io/gorm"
 )
-   type ArticleEmbedding struct {
-       ArticleID uint `gorm:"primaryKey"`
-       Article   Article
-       Embedding pgvector.Vector `gorm:"type:vector(384)"`
-   }
 
-   type ProductEmbedding struct {
-       ProductID uint `gorm:"primaryKey"`
-       Product   Product
-       Embedding pgvector.Vector `gorm:"type:vector(384)"`
-   }
+type ArticleEmbedding struct {
+    ArticleID uint            `json:"articleId" gorm:"primaryKey"`
+    Article   Article         `json:"article"`
+    Embedding pgvector.Vector `json:"embedding" gorm:"type:vector(384)"`
+}
+
+type ProductEmbedding struct {
+    ProductID uint            `json:"productId" gorm:"primaryKey"`
+    Product   Product         `json:"product"`
+    Embedding pgvector.Vector `json:"embedding" gorm:"type:vector(384)"`
+}
 
 type UserArticleInteraction struct {
-	gorm.Model
-	UserProfileID    uint
-	UserProfile      UserProfile
-	ArticleID        uint
-	Article          Article
-	InteractionType  string
-	Duration         int
+    gorm.Model    `json:"-"`
+    ID            uint        `json:"id" gorm:"primaryKey"`
+    UserProfileID uint        `json:"userProfileId"`
+    UserProfile   UserProfile `json:"userProfile"`
+    ArticleID     uint        `json:"articleId"`
+    Article       Article     `json:"article"`
+    InteractionType string    `json:"interactionType"`
+    Duration      int         `json:"duration"`
+    CreatedAt     time.Time   `json:"createdAt"`
+    UpdatedAt     time.Time   `json:"updatedAt"`
 }
 
 type UserProductInteraction struct {
-	gorm.Model
-	UserProfileID    uint
-	UserProfile      UserProfile
-	ProductID        uint
-	Product          Product
-	InteractionType  string
+    gorm.Model    `json:"-"`
+    ID            uint        `json:"id" gorm:"primaryKey"`
+    UserProfileID uint        `json:"userProfileId"`
+    UserProfile   UserProfile `json:"userProfile"`
+    ProductID     uint        `json:"productId"`
+    Product       Product     `json:"product"`
+    InteractionType string    `json:"interactionType"`
+    CreatedAt     time.Time   `json:"createdAt"`
+    UpdatedAt     time.Time   `json:"updatedAt"`
 }
 
 type UserArticleRecommendation struct {
-       UserProfileID       uint `gorm:"primaryKey"`
-       UserProfile         UserProfile
-       RecommendedArticles pq.Int64Array `gorm:"type:integer[]"`
-       LastUpdated         time.Time
-   }
+    UserProfileID       uint           `json:"userProfileId" gorm:"primaryKey"`
+    UserProfile         UserProfile    `json:"userProfile"`
+    RecommendedArticles pq.Int64Array  `json:"recommendedArticles" gorm:"type:integer[]"`
+    LastUpdated         time.Time      `json:"lastUpdated"`
+}
 
-   type UserProductRecommendation struct {
-       UserProfileID       uint `gorm:"primaryKey"`
-       UserProfile         UserProfile
-       RecommendedProducts pq.Int64Array `gorm:"type:integer[]"`
-       LastUpdated         time.Time
-   }
+type UserProductRecommendation struct {
+    UserProfileID       uint           `json:"userProfileId" gorm:"primaryKey"`
+    UserProfile         UserProfile    `json:"userProfile"`
+    RecommendedProducts pq.Int64Array  `json:"recommendedProducts" gorm:"type:integer[]"`
+    LastUpdated         time.Time      `json:"lastUpdated"`
+}

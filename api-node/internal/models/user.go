@@ -3,21 +3,29 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
 type UserProfile struct {
-	gorm.Model
-	UserID    string `gorm:"uniqueIndex"`
-	Username  string
-	Bio       string
-	AvatarURL string
+	gorm.Model `json:"-"`
+	ID         uint   `json:"id" gorm:"primaryKey"`
+	UserID     string `json:"userId" gorm:"uniqueIndex"`
+	Username   string `json:"username"`
+	Bio        string `json:"bio"`
+	AvatarURL  string `json:"avatarUrl"`
+	CreatedAt  time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type Creator struct {
-	gorm.Model
-	UserProfileID uint
-	UserProfile   UserProfile `gorm:"foreignKey:UserProfileID;constraint:OnDelete:CASCADE;"`
+    gorm.Model   `json:"-"`
+    ID           uint        `json:"id" gorm:"primaryKey"`
+    UserProfileID uint        `json:"userProfileId"`
+    UserProfile   UserProfile `json:"userProfile" gorm:"foreignKey:UserProfileID;constraint:OnDelete:CASCADE;"`
+    CreatedAt     time.Time   `json:"createdAt"`
+    UpdatedAt     time.Time   `json:"updatedAt"`
 }
 
 func GetUserProfileByUserID(db *gorm.DB, userID string) (*UserProfile, error) {
