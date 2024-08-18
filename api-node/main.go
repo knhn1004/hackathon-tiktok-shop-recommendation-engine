@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/config"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/routes"
@@ -32,6 +33,11 @@ func main() {
 
 	// Create a new Fiber app
 	app := fiber.New()
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+	}))
 
 	app.Use(logger.New())
 
