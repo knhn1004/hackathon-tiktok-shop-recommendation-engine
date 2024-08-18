@@ -60,7 +60,6 @@ func JWTMiddleware() fiber.Handler {
 				// Create new user if not exists
 				user = models.UserProfile{
 					UserID: userId,
-					// Set default values for other fields if needed
 				}
 				result = db.DB.Create(&user)
 				if result.Error != nil {
@@ -68,6 +67,7 @@ func JWTMiddleware() fiber.Handler {
 				}
 			}
 
+			c.Locals("userId", userId)
 			c.Locals("user", user)
 			return c.Next()
 		}

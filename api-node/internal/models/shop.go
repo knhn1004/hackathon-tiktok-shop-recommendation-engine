@@ -32,3 +32,26 @@ type Product struct {
 	Price       float64
 	ImageURL    string
 }
+
+type Order struct {
+	gorm.Model
+	UserID    string
+	ShopID    uint
+	Status    string // e.g., "pending", "completed", "cancelled"
+	OrderItems []OrderItem
+}
+
+type OrderItem struct {
+	gorm.Model
+	OrderID   uint
+	Order     Order   `gorm:"foreignKey:OrderID"`
+	ProductID uint
+	Product   Product `gorm:"foreignKey:ProductID"`
+	Quantity  int
+	Price     float64 // Price at the time of order
+}
+
+type OrderItemInput struct {
+	ProductID uint `json:"productId"`
+	Quantity  int  `json:"quantity"`
+}

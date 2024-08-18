@@ -52,6 +52,8 @@ func migrateSchema() error {
 		&models.UserArticleRecommendation{},
 		&models.UserProductRecommendation{},
 		&models.KafkaEvent{},
+		&models.Order{},
+		&models.OrderItem{},
 	)
 }
 

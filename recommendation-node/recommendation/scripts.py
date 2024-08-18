@@ -30,16 +30,26 @@ def generate_proto():
     with open(pb2_grpc_file, 'w') as f:
         f.write(content)
     
-    print(f"Files generated in: {current_dir}")
-    print(f"Contents of {current_dir}:")
+    #print(f"Files generated in: {current_dir}")
+    #print(f"Contents of {current_dir}:")
     print(os.listdir(current_dir))
 
 
 def run_dev_server():
     generate_proto()  # Generate proto files before starting the server
-    subprocess.run([
-        "python", "-m", "recommendation.server"
-    ])
+    try:
+        subprocess.run([
+            "watchmedo",
+            "auto-restart",
+            "--directory=./recommendation",
+            "--pattern=*.py",
+            "--recursive",
+            "--",
+            "python", "-m", "recommendation.server"
+        ], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error running dev server: {e}", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
     sys.exit(generate_proto())
