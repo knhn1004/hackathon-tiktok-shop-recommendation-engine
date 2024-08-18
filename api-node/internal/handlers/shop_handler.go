@@ -124,11 +124,11 @@ func OrderCart(c fiber.Ctx) error {
     }
 
     // Send interactions to Kafka asynchronously
-    go func() {
+    go func(interactions []models.UserProductInteraction, userID string) {
         for _, interaction := range interactions {
             kafka.WriteProductInteraction(context.Background(), []byte(userID), interaction)
         }
-    }()
+    }(interactions, userID)
 
     fmt.Printf("Order placed - userID: %s, shopID: %d, orderID: %d\n", userID, shopID, order.ID)
     return c.Status(fiber.StatusOK).JSON(fiber.Map{
