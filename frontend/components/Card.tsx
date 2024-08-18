@@ -7,9 +7,11 @@ interface CardProps {
   likes: number;
   comments: number;
   avatar: string;
+  onLike: () => void;
+  onUnlike: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, likes, comments, avatar }) => {
+const Card: React.FC<CardProps> = ({ title, description, likes, comments, avatar, onLike, onUnlike }) => {
   return (
     <div className={styles.card}>
       <div className={styles.content}>
@@ -18,7 +20,8 @@ const Card: React.FC<CardProps> = ({ title, description, likes, comments, avatar
       </div>
       <div className={styles.footer}>
         <img src={avatar} alt="avatar" className={styles.avatar} />
-        <span className={styles.likes}>❤️ {likes}</span>
+        <span className={styles.likes} onClick={onLike}>❤️ {likes}</span>
+        {/* <span className={styles.unlikes} onClick={onUnlike}>❤️</span> */}
         <span className={styles.comments}>💬 {comments}</span>
       </div>
     </div>

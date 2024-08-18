@@ -23,14 +23,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-	// TODO: remove this - sample logging token from clerk in SSR
-	const { getToken } = auth();
-	if (getToken) {
-		const token = await getToken({template: 'default'});
-		console.log(token);
-	}
+	// // TODO: remove this - sample logging token from clerk in SSR
+	// const { getToken } = auth();
+	// if (getToken) {
+	// 	const token = await getToken({template: 'default'});
+	// 	console.log(token);
+	// }
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <body className={inter.className}>
           <SignedOut>
