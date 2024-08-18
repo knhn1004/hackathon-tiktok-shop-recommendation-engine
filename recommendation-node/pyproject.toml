@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "recommendation-node"
+version = "0.1.0"
+description = "Recommendation service using gRPC"
+authors = ["knhn1004 <49494541+knhn1004@users.noreply.github.com>"]
+packages = [{include = "recommendation"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+grpcio = "^1.54.0"
+grpcio-tools = "^1.54.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.3.1"
+watchdog = {extras = ["watchmedo"], version = "^3.0.0"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "recommendation.server:main"
+generate-proto = "recommendation.scripts:generate_proto"
+dev = "recommendation.scripts:run_dev_server"

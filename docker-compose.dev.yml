@@ -56,23 +56,21 @@ services:
     command: npm run dev
 
 
-  #recommendation-node:
-  #  build:
-  #    context: ./api-node
-  #    dockerfile: Dockerfile.dev
-  #  volumes:
-  #    - ./recommendation-node:/app
-  #  ports:
-  #    - "8081:8081"
-  #  depends_on:
-  #    - postgres
-  #    - api-node
-  #  environment:
-  #    - DB_HOST=postgres
-  #    - DB_PORT=5432
-  #    - DB_NAME=vectorexample
-  #    - DB_USER=postgres
-  #    - DB_PASSWORD=postgres
+  recommendation:
+      build:
+        context: ./recommendation-node
+        dockerfile: Dockerfile.dev
+      ports:
+        - "50051:50051"
+      volumes:
+        - ./recommendation-node:/app
+      depends_on:
+        postgres:
+          condition: service_healthy
+      environment:
+        - PYTHONDONTWRITEBYTECODE=1
+        - PYTHONUNBUFFERED=1
+      command: sh -c "poetry run dev"
 
 volumes:
   tiktok_shop_recommender_postgres_data:
