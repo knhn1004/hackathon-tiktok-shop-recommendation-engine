@@ -48,13 +48,7 @@ func GetArticleComments(c fiber.Ctx) error {
 
 func LikeArticle(c fiber.Ctx) error {
 	articleID := c.Params("id")
-	userID := c.Locals("userID").(string)
-	userIDUint, err := strconv.ParseUint(userID, 10, 32)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
+	userID := c.Locals("userId").(string)
 
 	articleIDUint, err := strconv.ParseUint(articleID, 10, 32)
 	if err != nil {
@@ -63,8 +57,15 @@ func LikeArticle(c fiber.Ctx) error {
 		})
 	}
 
+	userProfile, err := models.GetUserProfileByUserID(db.DB, userID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to get user profile",
+		})
+	}
+
 	like := models.ArticleLike{
-		UserProfileID: uint(userIDUint),
+		UserProfileID: userProfile.ID,
 		ArticleID:     uint(articleIDUint),
 	}
 
@@ -80,9 +81,17 @@ func LikeArticle(c fiber.Ctx) error {
 
 func UnlikeArticle(c fiber.Ctx) error {
 	articleID := c.Params("id")
-	userID := c.Locals("userID").(string)
+	userID := c.Locals("userId").(string)
 
-	result := db.DB.Where("user_profile_id = ? AND article_id = ?", userID, articleID).
+	userProfile, err := models.GetUserProfileByUserID(db.DB, userID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to get user profile",
+			"userId": userID,
+		})
+	}
+
+	result := db.DB.Where("user_profile_id = ? AND article_id = ?", userProfile.ID, articleID).
 		Delete(&models.ArticleLike{})
 
 	if result.Error != nil {
@@ -96,7 +105,7 @@ func UnlikeArticle(c fiber.Ctx) error {
 
 func CreateComment(c fiber.Ctx) error {
 	articleID := c.Params("id")
-	userID := c.Locals("userID").(string)
+	userID := c.Locals("userId").(string)
 	var comment models.Comment
 	if err := c.Bind().JSON(&comment); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
