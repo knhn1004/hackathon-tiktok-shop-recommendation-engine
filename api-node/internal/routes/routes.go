@@ -7,7 +7,6 @@ import (
 
 func SetupRoutes(app *fiber.App) {
 	app.Use(middleware.JWTMiddleware())
-	SetupUserRoutes(app)
 	SetupArticleRoutes(app)
 	SetupShopRoutes(app)
 	SetupProductRoutes(app)

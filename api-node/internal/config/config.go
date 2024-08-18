@@ -25,12 +25,16 @@ var (
 	DBName     string
 	DBPort     int
 
+	// Clerk
+	ClerkPublicKey string
+
 	configs = []Configuration{
 		{&OpenAIKey, "OPENAI_API_KEY"},
 		{&DBHost, "DB_HOST"},
 		{&DBUser, "DB_USER"},
 		{&DBPassword, "DB_PASSWORD"},
 		{&DBName, "DB_NAME"},
+		{&ClerkPublicKey, "CLERK_PUBLIC_KEY"},
 	}
 
 	// Web
