@@ -20,6 +20,9 @@ const Page: React.FC = () => {
       <Card 
         title={articles[currentIndex].title} 
         description={articles[currentIndex].description} 
+        likes={articles[currentIndex].likes} 
+        comments={articles[currentIndex].comments} 
+        avatar={articles[currentIndex].avatar} 
       />
       <div className={styles.buttons}>
         <button onClick={handleBack} disabled={currentIndex === 0}>Back</button>

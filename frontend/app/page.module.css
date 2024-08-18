@@ -4,8 +4,8 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 20px;
+  background: linear-gradient(135deg, #69C9D0, #EE1D52, #010101);
+  padding: 40px;
   box-sizing: border-box;
 }
 

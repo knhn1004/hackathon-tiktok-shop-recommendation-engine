@@ -1,31 +1,46 @@
 [
     {
       "id": 1,
-      "title": "Text1",
-      "description": "Subtext1."
+      "title": "Sample text 1 this is a video bajsbdj ajsndj",
+      "description": "asdasd asdasdasdas asdasdasdasda asdasdasdasd.",
+      "likes": 120,
+      "comments": 45,
+      "avatar": "https://www.w3schools.com/howto/img_avatar.png"
     },
     {
       "id": 2,
-      "title": "Text2",
-      "description": "Subtext2."
+      "title": "Sample text 2 this is a oyuiuyi ahjtrhrdj",
+      "description": "ngfhf ertert  rthrthrh.",
+      "likes": 345,
+      "comments": 876,
+      "avatar": "https://www.w3schools.com/howto/img_avatar.png"
       
     },
     {
       "id": 3,
-      "title": "Text3",
-      "description": "Subtext3."
+      "title": "Sample text 3 this is a oyuiuyi ahjtrhrdj",
+      "description": "ewr nm ssdfl;ms;flmsf.",
+      "likes": 1,
+      "comments": 1,
+      "avatar": "https://www.w3schools.com/howto/img_avatar.png"
       
     },
     {
       "id": 4,
-      "title": "Text4",
-      "description": "Subtext4."
+      "title": "Sample text 4 this is a oyuiuyi ahjtrhrdj",
+      "description": "asdafsdfsdfsdfh thergrgw qasfcasc.",
+      "likes": 12320,
+      "comments": 4978,
+      "avatar": "https://www.w3schools.com/howto/img_avatar.png"
       
     },
     {
       "id": 5,
-      "title": "Text5",
-      "description": "Subtext5."
+      "title": "Sample text 5 this is a oyuiuyi ahjtrhrdj",
+      "description": "asdal; 'a;almsl;smad;lm ';;m.",
+      "likes": 130,
+      "comments": 5,
+      "avatar": "https://www.w3schools.com/howto/img_avatar.png"
       
     }
   ]
