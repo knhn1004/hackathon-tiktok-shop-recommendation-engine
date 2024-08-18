@@ -9,13 +9,14 @@
 - TypeScript
 - JavaScript
 - CSS
+- protobuf
 
 ### Frameworks
 
 - Next.js
 - go-fiber
 - kafka-go
-- pgvector
+- pg-vector
 
 ### Tools
 
