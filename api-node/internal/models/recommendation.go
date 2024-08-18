@@ -9,18 +9,17 @@ import (
 	"github.com/pgvector/pgvector-go"
 	"gorm.io/gorm"
 )
+   type ArticleEmbedding struct {
+       ArticleID uint `gorm:"primaryKey"`
+       Article   Article
+       Embedding pgvector.Vector `gorm:"type:vector(384)"`
+   }
 
-type ArticleEmbedding struct {
-	ArticleID uint
-	Article   Article
-	Embedding pgvector.Vector `gorm:"type:vector(768)"`
-}
-
-type ProductEmbedding struct {
-	ProductID uint
-	Product   Product
-	Embedding pgvector.Vector `gorm:"type:vector(768)"`
-}
+   type ProductEmbedding struct {
+       ProductID uint `gorm:"primaryKey"`
+       Product   Product
+       Embedding pgvector.Vector `gorm:"type:vector(384)"`
+   }
 
 type UserArticleInteraction struct {
 	gorm.Model
@@ -42,15 +41,15 @@ type UserProductInteraction struct {
 }
 
 type UserArticleRecommendation struct {
-	UserProfileID       uint
-	UserProfile         UserProfile
-	RecommendedArticles pq.Int64Array `gorm:"type:integer[]"`
-	LastUpdated         time.Time
-}
+       UserProfileID       uint `gorm:"primaryKey"`
+       UserProfile         UserProfile
+       RecommendedArticles pq.Int64Array `gorm:"type:integer[]"`
+       LastUpdated         time.Time
+   }
 
-type UserProductRecommendation struct {
-	UserProfileID       uint
-	UserProfile         UserProfile
-	RecommendedProducts pq.Int64Array `gorm:"type:integer[]"`
-	LastUpdated         time.Time
-}
+   type UserProductRecommendation struct {
+       UserProfileID       uint `gorm:"primaryKey"`
+       UserProfile         UserProfile
+       RecommendedProducts pq.Int64Array `gorm:"type:integer[]"`
+       LastUpdated         time.Time
+   }

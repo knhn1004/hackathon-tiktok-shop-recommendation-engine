@@ -8,7 +8,7 @@ import (
 
 type Shop struct {
 	gorm.Model
-	CreatorID   uint
+	CreatorID uint `gorm:"constraint:OnDelete:CASCADE;"`
 	Creator     Creator
 	Name        string
 	Description string
@@ -23,9 +23,9 @@ type Category struct {
 
 type Product struct {
 	gorm.Model
-	ShopID      uint
 	Shop        Shop
-	CategoryID  uint
+	ShopID      uint `gorm:"constraint:OnDelete:CASCADE;"`
+	CategoryID  uint `gorm:"foreignKey:ID;constraint:OnDelete:SET NULL;"`
 	Category    Category
 	Title       string
 	Description string

@@ -3,6 +3,7 @@ module github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node
 go 1.21.0
 
 require (
+	github.com/bxcodec/faker/v3 v3.8.1
 	github.com/gofiber/fiber/v3 v3.0.0-beta.3
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9

@@ -17,5 +17,5 @@ type UserProfile struct {
 type Creator struct {
 	gorm.Model
 	UserProfileID uint
-	UserProfile   UserProfile
+	UserProfile   UserProfile `gorm:"foreignKey:UserProfileID;constraint:OnDelete:CASCADE;"`
 }
