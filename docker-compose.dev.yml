@@ -4,9 +4,7 @@ name: tiktok-shop-recommender
 
 services:
   postgres:
-    build:
-      context: ./postgres
-      dockerfile: Dockerfile
+    image: ksisoft/pgvector:16.3-alpine
     ports:
       - "5432:5432"
     volumes:
