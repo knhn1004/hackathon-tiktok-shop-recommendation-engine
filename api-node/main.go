@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/config"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/services/db"
 )
@@ -31,10 +32,7 @@ func main() {
 	// Create a new Fiber app
 	app := fiber.New()
 
-	// Define a route for the root path
-	app.Get("/", func(c fiber.Ctx) error {
-		return c.SendString(config.OpenAIKey)
-	})
+	app.Use(logger.New())
 
 	app.Get("/health", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{
