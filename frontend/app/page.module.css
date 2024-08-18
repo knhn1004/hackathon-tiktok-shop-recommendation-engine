@@ -93,3 +93,12 @@
 .productChip:hover {
   background-color: #e0e0e0;
 }
+
+.authContainer {
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
