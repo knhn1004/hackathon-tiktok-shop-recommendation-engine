@@ -50,7 +50,9 @@ func main() {
 	// Seed data
 	seedUsers(100)
 	seedCreators()
+	seedCategories()
 	seedArticles()
+	seedShopsAndProducts()
 
 	fmt.Println("Seeding completed successfully!")
 }
@@ -82,9 +84,25 @@ func seedCreators() {
 		result := db.DB.Create(&creator)
 		if result.Error != nil {
 			log.Printf("Error creating creator: %v", result.Error)
+			continue
 		}
 	}
 	log.Printf("Created 10 creators")
+}
+
+func seedCategories() {
+	categories := []string{
+		"Fashion", "Technology", "Sports", "Beauty", "Lifestyle",
+		"Food", "Travel", "Fitness", "Music", "Art",
+	}
+
+	for _, category := range categories {
+		result := db.DB.Create(&models.Category{Name: category})
+		if result.Error != nil {
+			log.Printf("Error creating category: %v", result.Error)
+		}
+	}
+	log.Printf("Created categories")
 }
 
 func seedArticles() {
@@ -116,6 +134,50 @@ func seedArticles() {
 		}
 	}
 	log.Printf("Created 20 articles (2 for each creator)")
+}
+
+func seedShopsAndProducts() {
+	var creators []models.Creator
+	db.DB.Preload("UserProfile").Find(&creators)
+
+	for i, creator := range creators {
+		// Create a shop for each creator
+		shop := models.Shop{
+			CreatorID:   creator.ID,
+			Name:        fmt.Sprintf("%s's %s Shop", creator.UserProfile.Username, genres[i]),
+			Description: fmt.Sprintf("Welcome to %s's shop featuring %s products!", creator.UserProfile.Username, genres[i]),
+		}
+		result := db.DB.Create(&shop)
+		if result.Error != nil {
+			log.Printf("Error creating shop: %v", result.Error)
+			continue
+		}
+
+		// Create 5-10 products for each shop
+		numProducts := rand.Intn(6) + 5
+		for j := 0; j < numProducts; j++ {
+			product := generateProduct(genres[i], shop.ID)
+			result := db.DB.Create(&product)
+			if result.Error != nil {
+				log.Printf("Error creating product: %v", result.Error)
+			}
+		}
+	}
+	log.Printf("Created shops and products for all creators")
+}
+
+func generateProduct(genre string, shopID uint) models.Product {
+	var category models.Category
+	db.DB.Where("name = ?", genre).First(&category)
+
+	return models.Product{
+		ShopID:      shopID,
+		CategoryID:  category.ID,
+		Title:       fmt.Sprintf("%s Item", genre),
+		Description: fmt.Sprintf("An amazing %s product that you'll love. Perfect for enthusiasts and beginners alike.", genre),
+		Price:       float64(rand.Intn(10000)) / 100,
+		ImageURL:    faker.URL(),
+	}
 }
 
 func generateArticleContent(genre string) string {
@@ -154,4 +216,3 @@ func generateArticleContent(genre string) string {
 		return fmt.Sprintf("This is a fascinating article about %s. It explores the latest trends, innovations, and developments in this exciting field. From cutting-edge research to practical applications, this article covers it all. Whether you're a seasoned expert or a curious newcomer, you'll find valuable insights and thought-provoking ideas here. Stay tuned for more updates in the world of %s!", genre, genre)
 	}
 }
-

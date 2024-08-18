@@ -11,7 +11,7 @@ import (
 type Article struct {
 	gorm.Model
 	CreatorID uint `gorm:"constraint:OnDelete:CASCADE;"`
-	Creator    Creator
+	Creator    Creator  `gorm:"foreignKey:CreatorID"`
 	Title      string
 	Content string
 	Likes []ArticleLike `gorm:"foreignKey:ArticleID;constraint:OnDelete:CASCADE;"`

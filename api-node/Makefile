@@ -8,7 +8,11 @@ run: build
 
 seed: build
 	@echo "Seeding the database..."
-	@go run cmd/seed.go
+	@go run -tags seed cmd/seed/main.go
+
+purge-db:
+	@echo "Purging the database..."
+	@go run -tags purge_db cmd/purge_db/main.go
 
 watch:
 	@echo "Starting api-node in watch mode..."
