@@ -1,32 +1,47 @@
 [
-    {
-      "id": 1,
-      "title": "Text1",
-      "description": "Subtext1."
-    },
-    {
-      "id": 2,
-      "title": "Text2",
-      "description": "Subtext2."
-      
-    },
-    {
-      "id": 3,
-      "title": "Text3",
-      "description": "Subtext3."
-      
-    },
-    {
-      "id": 4,
-      "title": "Text4",
-      "description": "Subtext4."
-      
-    },
-    {
-      "id": 5,
-      "title": "Text5",
-      "description": "Subtext5."
-      
-    }
-  ]
-  
+  {
+    "id": 1,
+    "title": "Introduction to TypeScript",
+    "content_url": "https://example.com/articles/intro-typescript",
+    "likes": 150,
+    "views": 2500,
+    "created_at": "2024-08-10T09:00:00Z",
+    "updated_at": "2024-08-15T14:30:00Z"
+  },
+  {
+    "id": 2,
+    "title": "React Hooks Explained",
+    "content_url": "https://example.com/articles/react-hooks",
+    "likes": 230,
+    "views": 3800,
+    "created_at": "2024-08-05T11:15:00Z",
+    "updated_at": "2024-08-12T16:45:00Z"
+  },
+  {
+    "id": 3,
+    "title": "Building RESTful APIs with Node.js",
+    "content_url": "https://example.com/articles/nodejs-restful-apis",
+    "likes": 180,
+    "views": 3100,
+    "created_at": "2024-07-28T13:30:00Z",
+    "updated_at": "2024-08-14T10:20:00Z"
+  },
+  {
+    "id": 4,
+    "title": "CSS Grid vs Flexbox",
+    "content_url": "https://example.com/articles/css-grid-flexbox",
+    "likes": 120,
+    "views": 2200,
+    "created_at": "2024-08-02T15:45:00Z",
+    "updated_at": "2024-08-16T09:10:00Z"
+  },
+  {
+    "id": 5,
+    "title": "JavaScript ES6 Features",
+    "content_url": "https://example.com/articles/es6-features",
+    "likes": 200,
+    "views": 3500,
+    "created_at": "2024-07-25T10:00:00Z",
+    "updated_at": "2024-08-13T11:55:00Z"
+  }
+]
