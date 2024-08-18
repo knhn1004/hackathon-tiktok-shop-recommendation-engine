@@ -1,83 +1,75 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "@clerk/nextjs";
+import ProductCard from '@/components/Product';
+import productsData from '@/public/products_dummy_data.json';
+import styles from '@/app/page.module.css';
 
 interface Product {
-  ID: number,
-  ShopId: number,
-  CategoryID: number,
-  Title: string,
-  Description: string,
-  Price: number,
-  ImageURL: string,
+  id: number;
+  shopId: number;
+  categoryId: number;
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
 }
 
 const Page: React.FC = () => {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState(1);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<{product: Product, quantity: number}[]>([]);
   const { getToken } = useAuth();
   const shopId = 1;
-  
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const token = await getToken({ template: 'default' });
-        const response = await fetch(`http://localhost:8080/api/shops/${shopId}/products`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          }
-        });
-        const data = await response.json();
-        setProduct(data[0]);
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      }
-    };
-    
-    fetchProduct();
-  }, []);
-  
-  const handleAddToCart = async () => {
-    try {
-        const token = await getToken({ template: 'default' });
-        const response = await fetch(`http://localhost:8080/api/shops/${shop_id}/products`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json();
 
-    } catch (error) {
-        console.error('Error adding to cart', error);
-    }
+  useEffect(() => {
+    // For now, we'll use the dummy data instead of fetching from an API
+    setProducts(productsData);
+  }, []);
+
+  const handleAddToCart = (product: Product, quantity: number) => {
+    setCart(prevCart => {
+      const existingItem = prevCart.find(item => item.product.id === product.id);
+      if (existingItem) {
+        return prevCart.map(item => 
+          item.product.id === product.id 
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      } else {
+        return [...prevCart, { product, quantity }];
+      }
+    });
   };
 
-  if (!product) {
-    return <div>Loading...</div>;
-  }
+  const getTotalPrice = () => {
+    return cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  };
 
   return (
-    <div className="product-page">
-      <h1>{product.Title}</h1>
-      <img src={product.ImageURL} alt={product.Title} />
-      <p>{product.Description}</p>
-      <p>Price: ${product.Price}</p>
-      <div>
-        <label htmlFor="quantity">Quantity:</label>
-        <input
-          type="number"
-          id="quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value)))}
-          min="1"
-        />
+    <div className={styles.page}>
+      <div className={styles.productList}>
+        {products.map(product => (
+          <ProductCard 
+            key={product.id} 
+            product={product} 
+            onAddToCart={handleAddToCart} 
+          />
+        ))}
       </div>
-      <button onClick={handleAddToCart}>Add to Cart</button>
+      <div className={styles.checkoutSection}>
+        <h2>Checkout</h2>
+        {cart.map(item => (
+          <div key={item.product.id} className={styles.cartItem}>
+            <span>{item.product.title}</span>
+            <span>x {item.quantity}</span>
+            <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+          </div>
+        ))}
+        <p className={styles.total}>Total: ${getTotalPrice().toFixed(2)}</p>
+        <button className={styles.checkoutButton}>Proceed to Checkout</button>
+      </div>
     </div>
   );
-
 };
 
-export default Page; 
+export default Page;

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "shopId": 1,
+    "categoryId": 1,
+    "title": "Stylish T-Shirt",
+    "description": "A comfortable and trendy t-shirt for everyday wear.",
+    "price": 19.99,
+    "imageUrl": "https://example.com/images/tshirt.jpg"
+  },
+  {
+    "id": 2,
+    "shopId": 1,
+    "categoryId": 2,
+    "title": "Classic Jeans",
+    "description": "High-quality denim jeans with a perfect fit.",
+    "price": 49.99,
+    "imageUrl": "https://example.com/images/jeans.jpg"
+  },
+  {
+    "id": 3,
+    "shopId": 2,
+    "categoryId": 3,
+    "title": "Running Shoes",
+    "description": "Lightweight and comfortable shoes for your daily run.",
+    "price": 79.99,
+    "imageUrl": "https://example.com/images/running-shoes.jpg"
+  },
+  {
+    "id": 4,
+    "shopId": 2,
+    "categoryId": 4,
+    "title": "Leather Wallet",
+    "description": "Sleek and durable leather wallet with multiple compartments.",
+    "price": 29.99,
+    "imageUrl": "https://example.com/images/wallet.jpg"
+  },
+  {
+    "id": 5,
+    "shopId": 3,
+    "categoryId": 5,
+    "title": "Smartwatch",
+    "description": "Feature-packed smartwatch with fitness tracking capabilities.",
+    "price": 199.99,
+    "imageUrl": "https://example.com/images/smartwatch.jpg"
+  }
+]

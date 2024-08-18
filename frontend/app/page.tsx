@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
 import Card from "@/components/Card";
 import styles from "@/app/page.module.css";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -114,15 +115,34 @@ const Page: React.FC = () => {
           },
         }
       );
+      if (isLiked) {
+        const likeInteraction = await fetch(
+          'http://127.0.0.1:8080/api/interactions/articles',
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              productId: articles[currentIndex].id,
+              interactionType: "like",
+            }),
+          }
+        );
+      }
 
       if (response.ok) {
         setArticles((prevArticles) => {
-          const updatedArticles = [...prevArticles];
-          if (isLiked) {
-            updatedArticles[currentIndex].likes = updatedArticles[currentIndex].likes.filter(like => like !== 1);
-          } else {
-            updatedArticles[currentIndex].likes.push(1);
-          }
+          const updatedArticles = prevArticles.map((article, index) => {
+            if (index === currentIndex) {
+              const updatedLikes = isLiked
+                ? article.likes.filter(like => like !== 1)
+                : [...article.likes, 1];
+              return { ...article, likes: updatedLikes };
+            }
+            return article;
+          });
           return updatedArticles;
         });
       } else {
@@ -164,6 +184,9 @@ const Page: React.FC = () => {
         avatar={currentArticle.creator.userProfile.avatarUrl}
         handleLike={handleLike}
       />
+      <Link href="/products">
+        <button>Products</button>
+      </Link>
       <div className={styles.buttons}>
         <button
           className={styles.arrowButton}
