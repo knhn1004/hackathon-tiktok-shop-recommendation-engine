@@ -40,8 +40,20 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
     command: sh -c "make migrate && go run main.go"
-    tty: true
-    stdin_open: true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
 
   #recommendation-node:
   #  build:
