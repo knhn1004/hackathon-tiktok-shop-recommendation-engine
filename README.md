@@ -13,7 +13,9 @@
 ### Frameworks
 
 - Next.js
-- Kafka
+- go-fiber
+- kafka-go
+- pgvector
 
 ### Tools
 
@@ -67,6 +69,14 @@ As users interact with product pages, our recommendation engine, powered by a la
 
 The recommendation engine seamlessly integrates into the TikTok Shop experience, providing users with relevant suggestions without interrupting their browsing. Whether they're scrolling through videos or exploring product pages, the engine dynamically adjusts to offer the most pertinent content.
 
+## DB Schema
+
+![DB Schema](img/db-schema.png)
+
+## System Design
+
+![System Design](img/system-design.png)
+
 ## Development
 
 Start
@@ -92,11 +102,3 @@ db:seed (important to see items in API endpoint)
 ```
 docker-compose -f docker-compose.dev.yml exec api-node make seed
 ```
-
-## DB Schema
-
-![DB Schema](img/db-schema.png)
-
-## System Design
-
-![System Design](img/system-design.png)
