@@ -11,9 +11,6 @@ WORKDIR /app
 # Install air for live reloading
 RUN go install github.com/air-verse/air@latest
 
-# Install golang-migrate
-RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-
 # Copy go mod and sum files
 COPY go.mod go.sum ./
 
