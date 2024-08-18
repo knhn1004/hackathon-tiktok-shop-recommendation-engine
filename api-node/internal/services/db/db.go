@@ -59,24 +59,3 @@ func migrateSchema() error {
 func CreateUser(user *models.UserProfile) error {
 	return DB.Create(user).Error
 }
-
-// GetUser retrieves a user profile by ID
-func GetUser(id uint) (*models.UserProfile, error) {
-	var user models.UserProfile
-	err := DB.First(&user, id).Error
-	return &user, err
-}
-
-// CreateArticle creates a new article
-func CreateArticle(article *models.Article) error {
-	return DB.Create(article).Error
-}
-
-// GetArticle retrieves an article by ID
-func GetArticle(id uint) (*models.Article, error) {
-	var article models.Article
-	err := DB.First(&article, id).Error
-	return &article, err
-}
-
-// Add more database operations as needed...

@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/config"
+	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/routes"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/services/db"
 )
 
@@ -33,6 +34,10 @@ func main() {
 	app := fiber.New()
 
 	app.Use(logger.New())
+
+	// Setup routes
+	routes.SetupRoutes(app)
+
 
 	app.Get("/health", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{
