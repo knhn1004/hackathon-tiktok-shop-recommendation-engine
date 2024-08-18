@@ -37,7 +37,11 @@ export default function RootLayout({
 							<UserButton />
 						</SignedIn>
 					</div>
-					<main>{children}</main>
+					<main>
+						<div className={styles.container}>
+							{children}
+						</div>
+					</main>
 				</body>
 			</html>
 		</ClerkProvider>

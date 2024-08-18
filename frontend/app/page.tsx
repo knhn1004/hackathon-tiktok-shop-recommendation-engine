@@ -194,16 +194,14 @@ const Page: React.FC = () => {
 
 	if (!isSignedIn) {
 		return (
-			<div className={styles.container}>
-				<Card
-					title="Sign in"
-					description="Sign in to view articles"
-					likes={0}
-					comments={0}
-					avatar=""
-					handleLike={() => {}}
-				/>
-			</div>
+			<Card
+				title="Sign in"
+				description="Sign in to view articles"
+				likes={0}
+				comments={0}
+				avatar=""
+				handleLike={() => {}}
+			/>
 		);
 	}
 
@@ -214,7 +212,7 @@ const Page: React.FC = () => {
 	const currentArticle = articles[currentIndex];
 
 	return (
-		<div className={styles.container}>
+		<>
 			<Card
 				title={currentArticle.title}
 				description={currentArticle.content}
@@ -241,7 +239,7 @@ const Page: React.FC = () => {
 					<ArrowRight className={styles.arrowIcon} />
 				</button>
 			</div>
-		</div>
+		</>
 	);
 };
 

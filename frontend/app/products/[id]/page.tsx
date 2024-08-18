@@ -1,9 +1,9 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
+import Link from 'next/link';
 import styles from './ProductDetail.module.css';
 
 interface Product {
@@ -15,6 +15,7 @@ interface Product {
   shop: {
     name: string;
   };
+  shopId: number;
   category: {
     name: string;
   };
@@ -67,26 +68,33 @@ const ProductDetail: React.FC = () => {
   }
 
   return (
-		<div className={styles.container}>
-			<h1 className={styles.title}>{product.title}</h1>
-			<div className={styles.content}>
-				<div className={styles.imageContainer}>
-					<img
-						src="https://via.placeholder.com/400x300?text=Product+Image"
-						alt={product.title}
-						className={styles.image}
-					/>
-				</div>
-				<div className={styles.details}>
-					<p className={styles.description}>{product.description}</p>
-					<p className={styles.price}>Price: ${product.price.toFixed(2)}</p>
-					<p className={styles.shop}>Shop: {product.shop.name}</p>
-					<p className={styles.category}>Category: {product.category.name}</p>
-					<button className={styles.buyButton}>Buy Now</button>
-				</div>
-			</div>
-		</div>
-	);
+    <div className={styles.container}>
+      {product && (
+        <div className={styles.breadcrumb}>
+          <Link href="/">Home</Link> &gt; 
+          <Link href={`/shop/${product.shopId}`}>Shop</Link> &gt; 
+          <span>{product.title}</span>
+        </div>
+      )}
+      <h1 className={styles.title}>{product.title}</h1>
+      <div className={styles.content}>
+        <div className={styles.imageContainer}>
+          <img
+            src="https://via.placeholder.com/400x300?text=Product+Image"
+            alt={product.title}
+            className={styles.image}
+          />
+        </div>
+        <div className={styles.details}>
+          <p className={styles.description}>{product.description}</p>
+          <p className={styles.price}>Price: ${product.price.toFixed(2)}</p>
+          <p className={styles.shop}>Shop: {product.shop.name}</p>
+          <p className={styles.category}>Category: {product.category.name}</p>
+          <button className={styles.buyButton}>Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProductDetail;
