@@ -13,6 +13,4 @@ func SetupArticleRoutes(app *fiber.App) {
 	articleGroup.Post("/:id/like", handlers.LikeArticle)
 	articleGroup.Delete("/:id/like", handlers.UnlikeArticle)
 	articleGroup.Post("/:id/comments", handlers.CreateComment)
-	articleGroup.Put("/comments/:id", handlers.UpdateComment)
-	articleGroup.Get("/comments/:id", handlers.GetComment)
 }

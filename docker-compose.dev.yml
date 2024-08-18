@@ -11,6 +11,7 @@ services:
       - "5432:5432"
     volumes:
       - tiktok_shop_recommender_postgres_data:/var/lib/postgresql/data
+      - ./postgres/vector_extension.sql:/docker-entrypoint-initdb.d/vector_extension.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

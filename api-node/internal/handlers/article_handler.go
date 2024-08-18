@@ -6,7 +6,6 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/models"
 	"github.com/knhn1004/hackathon-tiktok-shop-recommendation-engine/api-node/internal/services/db"
-	"gorm.io/gorm"
 )
 
 func GetArticles(c fiber.Ctx) error {
@@ -136,61 +135,4 @@ func CreateComment(c fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(comment)
-}
-
-func UpdateComment(c fiber.Ctx) error {
-	commentID := c.Params("id")
-	userID := c.Locals("userID").(string)
-
-	var updatedComment models.Comment
-	if err := c.Bind().JSON(&updatedComment); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid input data",
-		})
-	}
-
-	// Check if the updatedComment struct is empty
-	if updatedComment.Content == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required fields",
-		})
-	}
-
-	result := db.DB.Model(&models.Comment{}).
-		Where("id = ? AND user_profile_id = ?", commentID, userID).
-		Update("content", updatedComment.Content)
-
-	if result.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to update comment",
-		})
-	}
-
-	if result.RowsAffected == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "Comment not found or you're not authorized to update it",
-		})
-	}
-
-	return c.SendStatus(fiber.StatusOK)
-}
-
-func GetComment(c fiber.Ctx) error {
-	commentID := c.Params("id")
-
-	var comment models.Comment
-	result := db.DB.Preload("UserProfile").First(&comment, commentID)
-
-	if result.Error != nil {
-		if result.Error == gorm.ErrRecordNotFound {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-				"error": "Comment not found",
-			})
-		}
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to fetch comment",
-		})
-	}
-
-	return c.JSON(comment)
 }
