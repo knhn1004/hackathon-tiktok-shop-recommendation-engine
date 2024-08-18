@@ -81,4 +81,4 @@ docker-compose -f docker-compose.dev.yml exec api-node make seed
 ```
 
 
-![System Design]("/system_design.png")
+![System Design](system_design.png)
