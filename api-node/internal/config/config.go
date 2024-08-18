@@ -28,6 +28,14 @@ var (
 	// Clerk
 	ClerkPublicKey string
 
+	// Kafka
+	KafkaUrl string
+	KafkaArticleInteractionTopic string
+	KafkaProductInteractionTopic string
+	KafkaUsername string
+	KafkaPassword string
+
+
 	configs = []Configuration{
 		{&OpenAIKey, "OPENAI_API_KEY"},
 		{&DBHost, "DB_HOST"},
@@ -35,6 +43,11 @@ var (
 		{&DBPassword, "DB_PASSWORD"},
 		{&DBName, "DB_NAME"},
 		{&ClerkPublicKey, "CLERK_PUBLIC_KEY"},
+		{&KafkaUrl, "KAFKA_URL"},
+		{&KafkaArticleInteractionTopic, "KAFKA_ARTICLE_INTERACTION_TOPIC"},
+		{&KafkaProductInteractionTopic, "KAFKA_PRODUCT_INTERACTION_TOPIC"},
+		{&KafkaUsername, "KAFKA_USERNAME"},
+		{&KafkaPassword, "KAFKA_PASSWORD"},
 	}
 
 	// Web
