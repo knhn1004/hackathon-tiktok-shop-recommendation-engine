@@ -4,7 +4,9 @@ name: tiktok-shop-recommender
 
 services:
   postgres:
-    image: ksisoft/pgvector:16.3-alpine
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
     ports:
       - "5432:5432"
     volumes:
@@ -13,7 +15,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=vectorexample
+      - POSTGRES_DB=postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

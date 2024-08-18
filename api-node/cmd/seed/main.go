@@ -129,7 +129,10 @@ func seedArticles() {
 			for j := 0; j < 3; j++ {
 				tag := models.Tag{Name: genreTags[rand.Intn(len(genreTags))]}
 				db.DB.FirstOrCreate(&tag, tag)
-				db.DB.Model(&article).Association("Tags").Append(&tag)
+				err := db.DB.Model(&article).Association("Tags").Append(&tag)
+				if err != nil {
+					log.Printf("Error adding tag to article: %v", err)
+				}
 			}
 		}
 	}
