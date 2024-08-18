@@ -63,9 +63,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 16px;
-  border-top: 1px solid #e0e0e0;
-  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.recommendedProductsWrapper {
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid #e0e0e0;
+	padding-top: 16px;
 }
 
 .productChip {
