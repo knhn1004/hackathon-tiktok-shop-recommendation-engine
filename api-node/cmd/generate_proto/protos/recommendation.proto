@@ -1,5 +1,6 @@
 syntax = "proto3";
 package recommendation;
+option go_package = "github.com/yourusername/yourproject/internal/proto/recommendation";
 
 message RecommendationRequest {
     string user_id = 1;

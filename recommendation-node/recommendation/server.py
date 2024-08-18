@@ -17,11 +17,11 @@ KAFKA_ARTICLE_TOPIC = os.getenv('KAFKA_ARTICLE_INTERACTION_TOPIC', 'article-inte
 KAFKA_PRODUCT_TOPIC = os.getenv('KAFKA_PRODUCT_INTERACTION_TOPIC', 'product-interactions')
 
 def process_article_interaction(interaction):
-    # Implement your article interaction processing logic here
+    # TODO: Implement logic to update article-product associations
     print(f"Processing article interaction: {interaction}")
 
 def process_product_interaction(interaction):
-    # Implement your product interaction processing logic here
+    # TODO: Implement logic to update user-product preferences
     print(f"Processing product interaction: {interaction}")
 
 def kafka_consumer_worker():

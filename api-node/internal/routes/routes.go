@@ -11,5 +11,6 @@ func SetupRoutes(app *fiber.App) {
 	SetupShopRoutes(app)
 	SetupProductRoutes(app)
 	SetupInteractionRoutes(app)
+	SetupRecommendationRoutes(app)
 	// Add other route setup functions here as needed
 }

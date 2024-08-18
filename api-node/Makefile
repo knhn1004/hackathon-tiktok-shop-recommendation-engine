@@ -1,8 +1,12 @@
+generate-proto:
+	@echo "Generating proto files..."
+	@go run -tags generate_proto cmd/generate_proto/main.go
+
 build:
 	@echo "Building api-node..."
 	@go build -o bin/api-node main.go
 
-run: build add-vector-extension
+run: build add-vector-extension generate-proto
 	@echo "Starting api-node..."
 	@./bin/api-node
 
@@ -18,6 +22,6 @@ add-vector-extension:
 	@echo "Adding vector extension to the database..."
 	@PGPASSWORD=$(DB_PASSWORD) psql -h $(DB_HOST) -U $(DB_USER) -d $(DB_NAME) -c "CREATE EXTENSION IF NOT EXISTS vector;"
 
-watch: add-vector-extension
+watch: add-vector-extension generate-proto
 	@echo "Starting api-node in watch mode..."
 	@air

@@ -12,6 +12,7 @@ import (
 )
 
 func GetProductsByShopID(c fiber.Ctx) error {
+	// TODO: right now the shopId's are not correct due to json string in model definition
 	shopID, err := strconv.Atoi(c.Params("shopId"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid shop ID"})
